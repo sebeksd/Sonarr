@@ -9,6 +9,8 @@ function SeasonInfo(props) {
   const {
     totalEpisodeCount,
     monitoredEpisodeCount,
+    watchedEpisodeCount,
+    archivedEpisodeCount,
     episodeFileCount,
     sizeOnDisk
   } = props;
@@ -32,6 +34,20 @@ function SeasonInfo(props) {
       <DescriptionListItem
         titleClassName={styles.title}
         descriptionClassName={styles.description}
+        title="Watched"
+        data={watchedEpisodeCount}
+      />
+
+      <DescriptionListItem
+        titleClassName={styles.title}
+        descriptionClassName={styles.description}
+        title="Archived"
+        data={archivedEpisodeCount}
+      />
+
+      <DescriptionListItem
+        titleClassName={styles.title}
+        descriptionClassName={styles.description}
         title="With Files"
         data={episodeFileCount}
       />
@@ -49,6 +65,8 @@ function SeasonInfo(props) {
 SeasonInfo.propTypes = {
   totalEpisodeCount: PropTypes.number.isRequired,
   monitoredEpisodeCount: PropTypes.number.isRequired,
+  watchedEpisodeCount: PropTypes.number.isRequired,
+  archivedEpisodeCount: PropTypes.number.isRequired,
   episodeFileCount: PropTypes.number.isRequired,
   sizeOnDisk: PropTypes.number.isRequired
 };

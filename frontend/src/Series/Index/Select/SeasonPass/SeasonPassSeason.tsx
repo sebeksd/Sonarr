@@ -22,13 +22,20 @@ function SeasonPassSeason(props: SeasonPassSeasonProps) {
     monitored,
     statistics = {
       episodeFileCount: 0,
+      episodeWatchedCount: 0,
+      episodeArchivedCount: 0,
       totalEpisodeCount: 0,
       percentOfEpisodes: 0,
     },
     isSaving = false,
   } = props;
 
-  const { episodeFileCount, totalEpisodeCount, percentOfEpisodes } = statistics;
+  const {
+    episodeFileCount,
+    episodeArchivedCount,
+    totalEpisodeCount,
+    percentOfEpisodes,
+  } = statistics;
 
   const dispatch = useDispatch();
   const onSeasonMonitoredPress = useCallback(() => {
@@ -36,6 +43,8 @@ function SeasonPassSeason(props: SeasonPassSeasonProps) {
       toggleSeasonMonitored({ seriesId, seasonNumber, monitored: !monitored })
     );
   }, [seriesId, seasonNumber, monitored, dispatch]);
+
+  const significantEpisodeFileCount = episodeFileCount + episodeArchivedCount;
 
   return (
     <div className={styles.season}>
@@ -56,11 +65,11 @@ function SeasonPassSeason(props: SeasonPassSeasonProps) {
           styles.episodes,
           percentOfEpisodes === 100 && styles.allEpisodes
         )}
-        title={`${episodeFileCount}/${totalEpisodeCount} episodes downloaded`}
+        title={`${significantEpisodeFileCount}/${totalEpisodeCount} episodes downloaded`}
       >
         {totalEpisodeCount === 0
           ? '0/0'
-          : `${episodeFileCount}/${totalEpisodeCount}`}
+          : `${significantEpisodeFileCount}/${totalEpisodeCount}`}
       </div>
     </div>
   );

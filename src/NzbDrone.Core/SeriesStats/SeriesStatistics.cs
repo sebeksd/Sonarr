@@ -11,6 +11,8 @@ namespace NzbDrone.Core.SeriesStats
         public string PreviousAiringString { get; set; }
         public int EpisodeFileCount { get; set; }
         public int EpisodeCount { get; set; }
+        public int EpisodeWatchedCount { get; set; }
+        public int EpisodeArchivedCount { get; set; }
         public int TotalEpisodeCount { get; set; }
         public long SizeOnDisk { get; set; }
         public List<string> ReleaseGroups { get; set; }

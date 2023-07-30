@@ -39,6 +39,8 @@ export default function SeriesIndexFooter() {
   const series = useSelector(createSeriesSelector());
   const count = series.length;
   let episodes = 0;
+  let episodeWatched = 0;
+  let episodeArchived = 0;
   let episodeFiles = 0;
   let ended = 0;
   let continuing = 0;
@@ -47,16 +49,26 @@ export default function SeriesIndexFooter() {
 
   series.forEach((s) => {
     const {
-      statistics = { episodeCount: 0, episodeFileCount: 0, sizeOnDisk: 0 },
+      statistics = {
+        episodeCount: 0,
+        episodeWatchedCount: 0,
+        episodeArchivedCount: 0,
+        episodeFileCount: 0,
+        sizeOnDisk: 0,
+      },
     } = s;
 
     const {
       episodeCount = 0,
+      episodeWatchedCount = 0,
+      episodeArchivedCount = 0,
       episodeFileCount = 0,
       sizeOnDisk = 0,
     } = statistics;
 
     episodes += episodeCount;
+    episodeWatched += episodeWatchedCount;
+    episodeArchived += episodeArchivedCount;
     episodeFiles += episodeFileCount;
 
     if (s.status === 'ended') {
@@ -148,12 +160,19 @@ export default function SeriesIndexFooter() {
               </DescriptionList>
 
               <DescriptionList>
-                <DescriptionListItem title="Episodes" data={episodes} />
+                <DescriptionListItem
+                  title="Episodes monitored"
+                  data={episodes}
+                />
 
-                <DescriptionListItem title="Files" data={episodeFiles} />
+                <DescriptionListItem title="watched" data={episodeWatched} />
+
+                <DescriptionListItem title="archived" data={episodeArchived} />
               </DescriptionList>
 
               <DescriptionList>
+                <DescriptionListItem title="Files" data={episodeFiles} />
+
                 <DescriptionListItem
                   title="Total File Size"
                   data={formatBytes(totalFileSize)}

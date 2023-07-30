@@ -76,6 +76,8 @@ function SeriesIndexOverview(props: SeriesIndexOverviewProps) {
     seasonCount = 0,
     episodeCount = 0,
     episodeFileCount = 0,
+    episodeWatchedCount = 0,
+    episodeArchivedCount = 0,
     totalEpisodeCount = 0,
     sizeOnDisk = 0,
   } = statistics;
@@ -165,6 +167,8 @@ function SeriesIndexOverview(props: SeriesIndexOverviewProps) {
             status={status}
             episodeCount={episodeCount}
             episodeFileCount={episodeFileCount}
+            episodeWatchedCount={episodeWatchedCount}
+            episodeArchivedCount={episodeArchivedCount}
             totalEpisodeCount={totalEpisodeCount}
             width={posterWidth}
             detailedProgressBar={overviewOptions.detailedProgressBar}

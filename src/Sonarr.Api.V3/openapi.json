@@ -10681,6 +10681,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "episodeWatchedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "episodeArchivedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
           "totalEpisodeCount": {
             "type": "integer",
             "format": "int32"
@@ -10979,6 +10987,14 @@
             "format": "int32"
           },
           "episodeCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "episodeWatchedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "episodeArchivedCount": {
             "type": "integer",
             "format": "int32"
           },

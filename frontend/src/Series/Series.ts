@@ -17,6 +17,8 @@ export interface Statistics {
   seasonCount: number;
   episodeCount: number;
   episodeFileCount: number;
+  episodeWatchedCount: number;
+  episodeArchivedCount: number;
   percentOfEpisodes: number;
   previousAiring?: Date;
   releaseGroups: string[];

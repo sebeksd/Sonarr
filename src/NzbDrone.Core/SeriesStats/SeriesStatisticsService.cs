@@ -45,6 +45,8 @@ namespace NzbDrone.Core.SeriesStats
                                        SeriesId = seasonStatistics.First().SeriesId,
                                        EpisodeFileCount = seasonStatistics.Sum(s => s.EpisodeFileCount),
                                        EpisodeCount = seasonStatistics.Sum(s => s.EpisodeCount),
+                                       EpisodeWatchedCount = seasonStatistics.Sum(s => s.EpisodeWatchedCount),
+                                       EpisodeArchivedCount = seasonStatistics.Sum(s => s.EpisodeArchivedCount),
                                        TotalEpisodeCount = seasonStatistics.Sum(s => s.TotalEpisodeCount),
                                        SizeOnDisk = seasonStatistics.Sum(s => s.SizeOnDisk),
                                        ReleaseGroups = seasonStatistics.SelectMany(s => s.ReleaseGroups).Distinct().ToList()

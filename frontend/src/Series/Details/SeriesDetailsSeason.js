@@ -33,6 +33,8 @@ function getSeasonStatistics(episodes) {
   let episodeFileCount = 0;
   let totalEpisodeCount = 0;
   let monitoredEpisodeCount = 0;
+  let watchedEpisodeCount = 0;
+  let archivedEpisodeCount = 0;
   let hasMonitoredEpisodes = false;
   const sizeOnDisk = 0;
 
@@ -50,6 +52,14 @@ function getSeasonStatistics(episodes) {
       hasMonitoredEpisodes = true;
     }
 
+    if (episode.watched) {
+      watchedEpisodeCount++;
+    }
+
+    if (episode.watched && (episode.episodeFileId === 0)) {
+      archivedEpisodeCount++;
+    }
+
     totalEpisodeCount++;
   });
 
@@ -58,13 +68,18 @@ function getSeasonStatistics(episodes) {
     episodeFileCount,
     totalEpisodeCount,
     monitoredEpisodeCount,
+    watchedEpisodeCount,
+    archivedEpisodeCount,
     hasMonitoredEpisodes,
     sizeOnDisk
   };
 }
 
-function getEpisodeCountKind(monitored, episodeFileCount, episodeCount) {
-  if (episodeFileCount === episodeCount && episodeCount > 0) {
+function getEpisodeCountKind(monitored, episodeFileCount, watchedEpisodeCount, archivedEpisodeCount, episodeCount) {
+  const significantEpisodeFileCount = episodeFileCount + archivedEpisodeCount;
+  const significantEpisodeCount = episodeCount + archivedEpisodeCount;
+
+  if (significantEpisodeFileCount === significantEpisodeCount && significantEpisodeCount > 0) {
     return kinds.SUCCESS;
   }
 
@@ -229,6 +244,8 @@ class SeriesDetailsSeason extends Component {
       episodeFileCount,
       totalEpisodeCount,
       monitoredEpisodeCount,
+      watchedEpisodeCount,
+      archivedEpisodeCount,
       hasMonitoredEpisodes
     } = getSeasonStatistics(items);
 
@@ -240,6 +257,9 @@ class SeriesDetailsSeason extends Component {
     } = this.state;
 
     const title = seasonNumber === 0 ? 'Specials' : `Season ${seasonNumber}`;
+
+    const significantEpisodeFileCount = episodeFileCount + archivedEpisodeCount;
+    const significantEpisodeCount = episodeCount + archivedEpisodeCount;
 
     return (
       <div
@@ -264,10 +284,10 @@ class SeriesDetailsSeason extends Component {
               canFlip={true}
               anchor={
                 <Label
-                  kind={getEpisodeCountKind(monitored, episodeFileCount, episodeCount)}
+                  kind={getEpisodeCountKind(monitored, episodeFileCount, watchedEpisodeCount, archivedEpisodeCount, episodeCount)}
                   size={sizes.LARGE}
                 >
-                  <span>{episodeFileCount} / {episodeCount}</span>
+                  <span>{significantEpisodeFileCount} / {significantEpisodeCount}</span>
                 </Label>
               }
               title="Season Information"
@@ -276,6 +296,8 @@ class SeriesDetailsSeason extends Component {
                   <SeasonInfo
                     totalEpisodeCount={totalEpisodeCount}
                     monitoredEpisodeCount={monitoredEpisodeCount}
+                    watchedEpisodeCount={watchedEpisodeCount}
+                    archivedEpisodeCount={archivedEpisodeCount}
                     episodeFileCount={episodeFileCount}
                     sizeOnDisk={sizeOnDisk}
                   />

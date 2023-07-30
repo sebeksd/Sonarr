@@ -66,6 +66,8 @@ function SeriesIndexPoster(props: SeriesIndexPosterProps) {
     seasonCount,
     episodeCount,
     episodeFileCount,
+    episodeWatchedCount,
+    episodeArchivedCount,
     totalEpisodeCount,
     sizeOnDisk,
   } = statistics;
@@ -184,6 +186,8 @@ function SeriesIndexPoster(props: SeriesIndexPosterProps) {
         status={status}
         episodeCount={episodeCount}
         episodeFileCount={episodeFileCount}
+        episodeWatchedCount={episodeWatchedCount}
+        episodeArchivedCount={episodeArchivedCount}
         totalEpisodeCount={totalEpisodeCount}
         width={posterWidth}
         detailedProgressBar={detailedProgressBar}

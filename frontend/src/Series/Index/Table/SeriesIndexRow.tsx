@@ -80,6 +80,8 @@ function SeriesIndexRow(props: SeriesIndexRowProps) {
     seasonCount = 0,
     episodeCount = 0,
     episodeFileCount = 0,
+    episodeWatchedCount = 0,
+    episodeArchivedCount = 0,
     totalEpisodeCount = 0,
     sizeOnDisk = 0,
     releaseGroups = [],
@@ -321,6 +323,8 @@ function SeriesIndexRow(props: SeriesIndexRowProps) {
                 status={status}
                 episodeCount={episodeCount}
                 episodeFileCount={episodeFileCount}
+                episodeWatchedCount={episodeWatchedCount}
+                episodeArchivedCount={episodeArchivedCount}
                 totalEpisodeCount={totalEpisodeCount}
                 width={125}
                 detailedProgressBar={true}
@@ -346,6 +350,8 @@ function SeriesIndexRow(props: SeriesIndexRowProps) {
                 status={status}
                 episodeCount={seasonStatistics.episodeCount}
                 episodeFileCount={seasonStatistics.episodeFileCount}
+                episodeWatchedCount={seasonStatistics.episodeWatchedCount}
+                episodeArchivedCount={seasonStatistics.episodeArchivedCount}
                 totalEpisodeCount={seasonStatistics.totalEpisodeCount}
                 width={125}
                 detailedProgressBar={true}

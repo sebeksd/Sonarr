@@ -15,6 +15,8 @@ interface SeriesIndexProgressBarProps {
   status: string;
   episodeCount: number;
   episodeFileCount: number;
+  episodeWatchedCount: number;
+  episodeArchivedCount: number;
   totalEpisodeCount: number;
   width: number;
   detailedProgressBar: boolean;
@@ -29,6 +31,8 @@ function SeriesIndexProgressBar(props: SeriesIndexProgressBarProps) {
     status,
     episodeCount,
     episodeFileCount,
+    episodeWatchedCount,
+    episodeArchivedCount,
     totalEpisodeCount,
     width,
     detailedProgressBar,
@@ -39,11 +43,17 @@ function SeriesIndexProgressBar(props: SeriesIndexProgressBarProps) {
     createSeriesQueueItemsDetailsSelector(seriesId, seasonNumber)
   );
 
+  const significantEpisodeCount = episodeCount + episodeArchivedCount;
+  const significantEpisodeFileCount = episodeFileCount + episodeArchivedCount;
+
   const newDownloads = queueDetails.count - queueDetails.episodesWithFiles;
-  const progress = episodeCount ? (episodeFileCount / episodeCount) * 100 : 100;
+  const progress = significantEpisodeCount
+    ? (significantEpisodeFileCount / significantEpisodeCount) * 100
+    : 100;
+
   const text = newDownloads
-    ? `${episodeFileCount} + ${newDownloads} / ${episodeCount}`
-    : `${episodeFileCount} / ${episodeCount}`;
+    ? `${significantEpisodeFileCount} + ${newDownloads} / ${significantEpisodeCount}`
+    : `${significantEpisodeFileCount} / ${significantEpisodeCount}`;
 
   return (
     <ProgressBar
@@ -59,7 +69,7 @@ function SeriesIndexProgressBar(props: SeriesIndexProgressBarProps) {
       size={detailedProgressBar ? sizes.MEDIUM : sizes.SMALL}
       showText={detailedProgressBar}
       text={text}
-      title={`${episodeFileCount} / ${episodeCount} (Total: ${totalEpisodeCount}, Downloading: ${queueDetails.count})`}
+      title={`${episodeFileCount} / ${episodeCount} (Total: ${totalEpisodeCount}, Watched: ${episodeWatchedCount}, Archived: ${episodeArchivedCount}, Downloading: ${queueDetails.count})`}
       width={width}
     />
   );

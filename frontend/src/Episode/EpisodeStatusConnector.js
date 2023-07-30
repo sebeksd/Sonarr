@@ -17,6 +17,7 @@ function createMapStateToProps() {
       const result = _.pick(episode, [
         'airDateUtc',
         'monitored',
+        'watched',
         'grabbed'
       ]);
 

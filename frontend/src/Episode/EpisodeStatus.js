@@ -12,6 +12,7 @@ function EpisodeStatus(props) {
   const {
     airDateUtc,
     monitored,
+    watched,
     grabbed,
     queueItem,
     episodeFile
@@ -83,6 +84,18 @@ function EpisodeStatus(props) {
     );
   }
 
+  if (watched) {
+    return (
+      <div className={styles.center}>
+        <Icon
+          name={icons.BACKUP}
+          kind={kinds.DISABLED}
+          title="Episode is archived"
+        />
+      </div>
+    );
+  }
+
   if (!monitored) {
     return (
       <div className={styles.center}>
@@ -119,6 +132,7 @@ function EpisodeStatus(props) {
 EpisodeStatus.propTypes = {
   airDateUtc: PropTypes.string,
   monitored: PropTypes.bool.isRequired,
+  watched: PropTypes.bool.isRequired,
   grabbed: PropTypes.bool,
   queueItem: PropTypes.object,
   episodeFile: PropTypes.object
