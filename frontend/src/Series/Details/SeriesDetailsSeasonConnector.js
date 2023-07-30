@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
-import { setEpisodesTableOption, toggleEpisodesMonitored } from 'Store/Actions/episodeActions';
+import { setEpisodesTableOption, toggleEpisodesMonitored, toggleEpisodesWatchedArchived } from 'Store/Actions/episodeActions';
 import { toggleSeasonMonitored } from 'Store/Actions/seriesActions';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
@@ -44,6 +44,7 @@ function createMapStateToProps() {
 const mapDispatchToProps = {
   toggleSeasonMonitored,
   toggleEpisodesMonitored,
+  toggleEpisodesWatchedArchived,
   setEpisodesTableOption,
   executeCommand
 };
@@ -90,6 +91,13 @@ class SeriesDetailsSeasonConnector extends Component {
     });
   };
 
+  onWatchedArchivedEpisodePress = (episodeIds, watched) => {
+    this.props.toggleEpisodesWatchedArchived({
+      episodeIds,
+      watched
+    });
+  };
+
   //
   // Render
 
@@ -101,6 +109,7 @@ class SeriesDetailsSeasonConnector extends Component {
         onMonitorSeasonPress={this.onMonitorSeasonPress}
         onSearchPress={this.onSearchPress}
         onMonitorEpisodePress={this.onMonitorEpisodePress}
+        onWatchedArchivedEpisodePress={this.onWatchedArchivedEpisodePress}
       />
     );
   }
@@ -111,6 +120,7 @@ SeriesDetailsSeasonConnector.propTypes = {
   seasonNumber: PropTypes.number.isRequired,
   toggleSeasonMonitored: PropTypes.func.isRequired,
   toggleEpisodesMonitored: PropTypes.func.isRequired,
+  toggleEpisodesWatchedArchived: PropTypes.func.isRequired,
   setEpisodesTableOption: PropTypes.func.isRequired,
   executeCommand: PropTypes.func.isRequired
 };

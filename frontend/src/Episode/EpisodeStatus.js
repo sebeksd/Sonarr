@@ -84,7 +84,7 @@ function EpisodeStatus(props) {
     );
   }
 
-  if (watched) {
+  if (watched && !monitored) {
     return (
       <div className={styles.center}>
         <Icon

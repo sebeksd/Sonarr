@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import episodeEntities from 'Episode/episodeEntities';
-import { toggleEpisodeMonitored } from 'Store/Actions/episodeActions';
+import { toggleEpisodeMonitored, toggleEpisodeWatchedArchived } from 'Store/Actions/episodeActions';
 import { cancelFetchReleases, clearReleases } from 'Store/Actions/releaseActions';
 import createEpisodeSelector from 'Store/Selectors/createEpisodeSelector';
 import createSeriesSelector from 'Store/Selectors/createSeriesSelector';
@@ -52,6 +52,19 @@ function createMapDispatchToProps(dispatch, props) {
         episodeEntity,
         episodeId,
         monitored
+      }));
+    },
+
+    onWatchedArchivedEpisodePress(watched) {
+      const {
+        episodeId,
+        episodeEntity
+      } = props;
+
+      dispatch(toggleEpisodeWatchedArchived({
+        episodeEntity,
+        episodeId,
+        watched
       }));
     }
   };

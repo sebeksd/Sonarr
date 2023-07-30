@@ -1909,6 +1909,37 @@
         }
       }
     },
+    "/api/v3/episode/watched": {
+      "put": {
+        "tags": [
+          "Episode"
+        ],
+        "parameters": [
+          {
+            "name": "includeImages",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EpisodesWatchedResource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/v3/episodefile": {
       "get": {
         "tags": [

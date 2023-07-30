@@ -7,6 +7,7 @@ import ModalContent from 'Components/Modal/ModalContent';
 import ModalFooter from 'Components/Modal/ModalFooter';
 import ModalHeader from 'Components/Modal/ModalHeader';
 import MonitorToggleButton from 'Components/MonitorToggleButton';
+import WatchedToggleButton from 'Components/WatchedToggleButton';
 import episodeEntities from 'Episode/episodeEntities';
 import EpisodeHistoryConnector from './History/EpisodeHistoryConnector';
 import EpisodeSearchConnector from './Search/EpisodeSearchConnector';
@@ -61,10 +62,12 @@ class EpisodeDetailsModalContent extends Component {
       episodeTitle,
       airDate,
       monitored,
+      watched,
       isSaving,
       showOpenSeriesButton,
       startInteractiveSearch,
       onMonitorEpisodePress,
+      onWatchedArchivedEpisodePress,
       onModalClose
     } = this.props;
 
@@ -83,6 +86,15 @@ class EpisodeDetailsModalContent extends Component {
             isDisabled={!seriesMonitored}
             isSaving={isSaving}
             onPress={onMonitorEpisodePress}
+          />
+
+          <WatchedToggleButton
+            className={styles.toggleButton}
+            id={episodeId}
+            watched={watched}
+            size={18}
+            isSaving={isSaving}
+            onPress={onWatchedArchivedEpisodePress}
           />
 
           <span className={styles.seriesTitle}>
@@ -203,11 +215,13 @@ EpisodeDetailsModalContent.propTypes = {
   airDate: PropTypes.string.isRequired,
   episodeTitle: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
+  watched: PropTypes.bool.isRequired,
   isSaving: PropTypes.bool,
   showOpenSeriesButton: PropTypes.bool,
   selectedTab: PropTypes.string.isRequired,
   startInteractiveSearch: PropTypes.bool.isRequired,
   onMonitorEpisodePress: PropTypes.func.isRequired,
+  onWatchedArchivedEpisodePress: PropTypes.func.isRequired,
   onTabChange: PropTypes.func.isRequired,
   onModalClose: PropTypes.func.isRequired
 };

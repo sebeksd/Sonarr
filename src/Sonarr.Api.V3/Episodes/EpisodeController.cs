@@ -76,5 +76,23 @@ namespace Sonarr.Api.V3.Episodes
 
             return Accepted(resources);
         }
+
+        [HttpPut("watched")]
+        [Consumes("application/json")]
+        public IActionResult SetEpisodesMonitored([FromBody] EpisodesWatchedResource resource, [FromQuery] bool includeImages = false)
+        {
+            if (resource.EpisodeIds.Count == 1)
+            {
+                _episodeService.SetEpisodeWatched(resource.EpisodeIds.First(), resource.Watched);
+            }
+            else
+            {
+                _episodeService.SetWatched(resource.EpisodeIds, resource.Watched);
+            }
+
+            var resources = MapToResource(_episodeService.GetEpisodes(resource.EpisodeIds), false, false, includeImages);
+
+            return Accepted(resources);
+        }
     }
 }

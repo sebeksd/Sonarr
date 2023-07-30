@@ -213,6 +213,24 @@ class SeriesDetailsSeason extends Component {
     this.props.onMonitorEpisodePress(_.uniq(episodeIds), monitored);
   };
 
+  onWatchedArchivedEpisodePress = (episodeId, watched, { shiftKey }) => {
+    const lastToggled = this.state.lastToggledEpisode;
+    const episodeIds = [episodeId];
+
+    if (shiftKey && lastToggled) {
+      const { lower, upper } = getToggledRange(this.props.items, episodeId, lastToggled);
+      const items = this.props.items;
+
+      for (let i = lower; i < upper; i++) {
+        episodeIds.push(items[i].id);
+      }
+    }
+
+    this.setState({ lastToggledEpisode: episodeId });
+
+    this.props.onWatchedArchivedEpisodePress(_.uniq(episodeIds), watched);
+  };
+
   //
   // Render
 
@@ -479,6 +497,7 @@ class SeriesDetailsSeason extends Component {
                                 columns={columns}
                                 {...item}
                                 onMonitorEpisodePress={this.onMonitorEpisodePress}
+                                onWatchedArchivedEpisodePress={this.onWatchedArchivedEpisodePress}
                               />
                             );
                           })
@@ -561,6 +580,7 @@ SeriesDetailsSeason.propTypes = {
   onMonitorSeasonPress: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
   onMonitorEpisodePress: PropTypes.func.isRequired,
+  onWatchedArchivedEpisodePress: PropTypes.func.isRequired,
   onSearchPress: PropTypes.func.isRequired
 };
 

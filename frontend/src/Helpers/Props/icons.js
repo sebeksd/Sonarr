@@ -8,6 +8,7 @@ import {
   faClock as farClock,
   faClone as farClone,
   faDotCircle as farDotCircle,
+  faEye as farEye,
   faFile as farFile,
   faFileArchive as farFileArchive,
   faFileVideo as farFileVideo,
@@ -16,8 +17,7 @@ import {
   faKeyboard as farKeyboard,
   faObjectGroup as farObjectGroup,
   faObjectUngroup as farObjectUngroup,
-  faSquare as farSquare
-} from '@fortawesome/free-regular-svg-icons';
+  faSquare as farSquare } from '@fortawesome/free-regular-svg-icons';
 //
 // Solid
 import {
@@ -218,3 +218,4 @@ export const UNSAVED_SETTING = farDotCircle;
 export const VIEW = fasEye;
 export const WARNING = fasExclamationTriangle;
 export const WIKI = fasBookReader;
+export const UNVIEW = farEye;

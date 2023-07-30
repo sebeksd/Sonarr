@@ -10,6 +10,12 @@
   width: 42px;
 }
 
+.watched {
+  composes: cell from '~Components/Table/Cells/TableRowCell.css';
+
+  width: 42px;
+}
+
 .episodeNumber {
   composes: cell from '~Components/Table/Cells/TableRowCell.css';
 

@@ -5,6 +5,7 @@ import RelativeDateCellConnector from 'Components/Table/Cells/RelativeDateCellCo
 import TableRowCell from 'Components/Table/Cells/TableRowCell';
 import TableRow from 'Components/Table/TableRow';
 import Tooltip from 'Components/Tooltip/Tooltip';
+import WatchedToggleButton from 'Components/WatchedToggleButton';
 import EpisodeFormats from 'Episode/EpisodeFormats';
 import EpisodeNumber from 'Episode/EpisodeNumber';
 import EpisodeSearchCellConnector from 'Episode/EpisodeSearchCellConnector';
@@ -47,6 +48,10 @@ class EpisodeRow extends Component {
     this.props.onMonitorEpisodePress(this.props.id, monitored, options);
   };
 
+  onWatchedArchivedEpisodePress = (watched, options) => {
+    this.props.onWatchedArchivedEpisodePress(this.props.id, watched, options);
+  };
+
   //
   // Render
 
@@ -56,6 +61,7 @@ class EpisodeRow extends Component {
       seriesId,
       episodeFileId,
       monitored,
+      watched,
       seasonNumber,
       episodeNumber,
       absoluteEpisodeNumber,
@@ -104,6 +110,21 @@ class EpisodeRow extends Component {
                     isDisabled={!seriesMonitored}
                     isSaving={isSaving}
                     onPress={this.onMonitorEpisodePress}
+                  />
+                </TableRowCell>
+              );
+            }
+
+            if (name === 'watched') {
+              return (
+                <TableRowCell
+                  key={name}
+                  className={styles.watched}
+                >
+                  <WatchedToggleButton
+                    watched={watched}
+                    isSaving={isSaving}
+                    onPress={this.onWatchedArchivedEpisodePress}
                   />
                 </TableRowCell>
               );
@@ -358,6 +379,7 @@ EpisodeRow.propTypes = {
   seriesId: PropTypes.number.isRequired,
   episodeFileId: PropTypes.number,
   monitored: PropTypes.bool.isRequired,
+  watched: PropTypes.bool.isRequired,
   seasonNumber: PropTypes.number.isRequired,
   episodeNumber: PropTypes.number.isRequired,
   absoluteEpisodeNumber: PropTypes.number,
@@ -381,7 +403,8 @@ EpisodeRow.propTypes = {
   mediaInfo: PropTypes.object,
   alternateTitles: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onMonitorEpisodePress: PropTypes.func.isRequired
+  onMonitorEpisodePress: PropTypes.func.isRequired,
+  onWatchedArchivedEpisodePress: PropTypes.func.isRequired
 };
 
 EpisodeRow.defaultProps = {

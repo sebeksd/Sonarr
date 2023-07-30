@@ -38,6 +38,12 @@ export const defaultState = {
       isModifiable: false
     },
     {
+      name: 'watched',
+      columnLabel: 'Watched/Archived',
+      isVisible: true,
+      isModifiable: true
+    },
+    {
       name: 'episodeNumber',
       label: '#',
       isVisible: true
@@ -150,7 +156,9 @@ export const SET_EPISODES_SORT = 'episodes/setEpisodesSort';
 export const SET_EPISODES_TABLE_OPTION = 'episodes/setEpisodesTableOption';
 export const CLEAR_EPISODES = 'episodes/clearEpisodes';
 export const TOGGLE_EPISODE_MONITORED = 'episodes/toggleEpisodeMonitored';
+export const TOGGLE_EPISODE_WATCHED_ARCHIVED = 'episodes/toggleEpisodeWatchedArchived';
 export const TOGGLE_EPISODES_MONITORED = 'episodes/toggleEpisodesMonitored';
+export const TOGGLE_EPISODES_WATCHED_ARCHIVED = 'episodes/toggleEpisodesWatchedArchived';
 
 //
 // Action Creators
@@ -160,7 +168,9 @@ export const setEpisodesSort = createAction(SET_EPISODES_SORT);
 export const setEpisodesTableOption = createAction(SET_EPISODES_TABLE_OPTION);
 export const clearEpisodes = createAction(CLEAR_EPISODES);
 export const toggleEpisodeMonitored = createThunk(TOGGLE_EPISODE_MONITORED);
+export const toggleEpisodeWatchedArchived = createThunk(TOGGLE_EPISODE_WATCHED_ARCHIVED);
 export const toggleEpisodesMonitored = createThunk(TOGGLE_EPISODES_MONITORED);
+export const toggleEpisodesWatchedArchived = createThunk(TOGGLE_EPISODES_WATCHED_ARCHIVED);
 
 //
 // Action Handlers
@@ -194,6 +204,44 @@ export const actionHandlers = handleThunks({
         section: episodeEntity,
         isSaving: false,
         monitored
+      }));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(updateItem({
+        id,
+        section: episodeEntity,
+        isSaving: false
+      }));
+    });
+  },
+
+  [TOGGLE_EPISODE_WATCHED_ARCHIVED]: function(getState, payload, dispatch) {
+    const {
+      episodeId: id,
+      episodeEntity = episodeEntities.EPISODES,
+      watched
+    } = payload;
+
+    dispatch(updateItem({
+      id,
+      section: episodeEntity,
+      isSaving: true
+    }));
+
+    const promise = createAjaxRequest({
+      url: `/episode/${id}`,
+      method: 'PUT',
+      data: JSON.stringify({ watched }),
+      dataType: 'json'
+    }).request;
+
+    promise.done((data) => {
+      dispatch(updateItem({
+        id,
+        section: episodeEntity,
+        isSaving: false,
+        watched
       }));
     });
 
@@ -240,6 +288,58 @@ export const actionHandlers = handleThunks({
             section: episodeSection,
             isSaving: false,
             monitored
+          });
+        })
+      ));
+    });
+
+    promise.fail((xhr) => {
+      dispatch(batchActions(
+        episodeIds.map((episodeId) => {
+          return updateItem({
+            id: episodeId,
+            section: episodeSection,
+            isSaving: false
+          });
+        })
+      ));
+    });
+  },
+
+  [TOGGLE_EPISODES_WATCHED_ARCHIVED]: function(getState, payload, dispatch) {
+    const {
+      episodeIds,
+      episodeEntity = episodeEntities.EPISODES,
+      watched
+    } = payload;
+
+    const episodeSection = _.last(episodeEntity.split('.'));
+
+    dispatch(batchActions(
+      episodeIds.map((episodeId) => {
+        return updateItem({
+          id: episodeId,
+          section: episodeSection,
+          isSaving: true
+        });
+      })
+    ));
+
+    const promise = createAjaxRequest({
+      url: '/episode/watched',
+      method: 'PUT',
+      data: JSON.stringify({ episodeIds, watched }),
+      dataType: 'json'
+    }).request;
+
+    promise.done((data) => {
+      dispatch(batchActions(
+        episodeIds.map((episodeId) => {
+          return updateItem({
+            id: episodeId,
+            section: episodeSection,
+            isSaving: false,
+            watched
           });
         })
       ));

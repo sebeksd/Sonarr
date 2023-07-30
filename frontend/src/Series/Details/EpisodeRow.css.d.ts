@@ -16,6 +16,7 @@ interface CssExports {
   'title': string;
   'video': string;
   'videoDynamicRangeType': string;
+  'watched': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
