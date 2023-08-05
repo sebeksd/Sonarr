@@ -74,7 +74,7 @@ namespace NzbDrone.Core.SeriesStats
                              Episodes.SeasonNumber,
                              COUNT(*) AS TotalEpisodeCount,
                              SUM(CASE WHEN AirdateUtc <= @currentDate OR EpisodeFileId > 0 THEN 1 ELSE 0 END) AS AvailableEpisodeCount,
-                             SUM(CASE WHEN (Monitored = 1 AND AirdateUtc <= @currentDate) OR EpisodeFileId > 0 THEN 1 ELSE 0 END) AS EpisodeCount,
+                             SUM(CASE WHEN (Monitored = 1 AND AirdateUtc <= @currentDate) OR Watched OR EpisodeFileId > 0 THEN 1 ELSE 0 END) AS EpisodeCount,
                              SUM(CASE WHEN EpisodeFileId > 0 THEN 1 ELSE 0 END) AS EpisodeFileCount,
                              SUM(CASE WHEN (Watched = 1 AND AirdateUtc <= @currentDate) THEN 1 ELSE 0 END) AS EpisodeWatchedCount,
                              SUM(CASE WHEN (Monitored = 0 AND Watched = 1 AND AirdateUtc <= @currentDate AND EpisodeFileId = 0) THEN 1 ELSE 0 END) AS EpisodeArchivedCount,

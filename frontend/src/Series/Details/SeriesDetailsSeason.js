@@ -39,7 +39,7 @@ function getSeasonStatistics(episodes) {
   const sizeOnDisk = 0;
 
   episodes.forEach((episode) => {
-    if (episode.episodeFileId || (episode.monitored && isBefore(episode.airDateUtc))) {
+    if (episode.episodeFileId || (episode.monitored && isBefore(episode.airDateUtc)) || episode.watched) {
       episodeCount++;
     }
 
@@ -77,9 +77,8 @@ function getSeasonStatistics(episodes) {
 
 function getEpisodeCountKind(monitored, episodeFileCount, watchedEpisodeCount, archivedEpisodeCount, episodeCount) {
   const significantEpisodeFileCount = episodeFileCount + archivedEpisodeCount;
-  const significantEpisodeCount = episodeCount + archivedEpisodeCount;
 
-  if (significantEpisodeFileCount === significantEpisodeCount && significantEpisodeCount > 0) {
+  if (significantEpisodeFileCount === episodeCount && episodeCount > 0) {
     return kinds.SUCCESS;
   }
 
@@ -239,6 +238,7 @@ class SeriesDetailsSeason extends Component {
       seriesId,
       path,
       monitored,
+      watched,
       seasonNumber,
       items,
       columns,
@@ -250,6 +250,7 @@ class SeriesDetailsSeason extends Component {
       isSmallScreen,
       onTableOptionChange,
       onMonitorSeasonPress,
+      onWatchedArchivedSeasonPress,
       onSearchPress
     } = this.props;
 
@@ -275,9 +276,7 @@ class SeriesDetailsSeason extends Component {
     } = this.state;
 
     const title = seasonNumber === 0 ? 'Specials' : `Season ${seasonNumber}`;
-
     const significantEpisodeFileCount = episodeFileCount + archivedEpisodeCount;
-    const significantEpisodeCount = episodeCount + archivedEpisodeCount;
 
     return (
       <div
@@ -305,7 +304,7 @@ class SeriesDetailsSeason extends Component {
                   kind={getEpisodeCountKind(monitored, episodeFileCount, watchedEpisodeCount, archivedEpisodeCount, episodeCount)}
                   size={sizes.LARGE}
                 >
-                  <span>{significantEpisodeFileCount} / {significantEpisodeCount}</span>
+                  <span>{significantEpisodeFileCount} / {episodeCount}</span>
                 </Label>
               }
               title="Season Information"
@@ -486,7 +485,10 @@ class SeriesDetailsSeason extends Component {
                   items.length ?
                     <Table
                       columns={columns}
+                      isSaving={isSaving}
+                      watched={watched}
                       onTableOptionChange={onTableOptionChange}
+                      onExecuteAction={onWatchedArchivedSeasonPress}
                     >
                       <TableBody>
                         {
@@ -567,6 +569,7 @@ SeriesDetailsSeason.propTypes = {
   seriesId: PropTypes.number.isRequired,
   path: PropTypes.string.isRequired,
   monitored: PropTypes.bool.isRequired,
+  watched: PropTypes.bool.isRequired,
   seasonNumber: PropTypes.number.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   columns: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -578,6 +581,7 @@ SeriesDetailsSeason.propTypes = {
   isSmallScreen: PropTypes.bool.isRequired,
   onTableOptionChange: PropTypes.func.isRequired,
   onMonitorSeasonPress: PropTypes.func.isRequired,
+  onWatchedArchivedSeasonPress: PropTypes.func.isRequired,
   onExpandPress: PropTypes.func.isRequired,
   onMonitorEpisodePress: PropTypes.func.isRequired,
   onWatchedArchivedEpisodePress: PropTypes.func.isRequired,

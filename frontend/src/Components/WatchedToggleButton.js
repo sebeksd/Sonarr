@@ -10,7 +10,7 @@ function getTooltip(watched) {
     return 'Watched/Archived, click to set as unwatched/unarchived';
   }
 
-  return 'Unwatched/Unarchived, click to set as wathced/archived';
+  return 'Unwatched/Unarchived, click to set as watched/archived';
 }
 
 class WatchedToggleButton extends Component {

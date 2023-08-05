@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import * as commandNames from 'Commands/commandNames';
 import { executeCommand } from 'Store/Actions/commandActions';
 import { setEpisodesTableOption, toggleEpisodesMonitored, toggleEpisodesWatchedArchived } from 'Store/Actions/episodeActions';
-import { toggleSeasonMonitored } from 'Store/Actions/seriesActions';
+import { toggleSeasonMonitored, toggleSeasonWatchedArchived } from 'Store/Actions/seriesActions';
 import createCommandsSelector from 'Store/Selectors/createCommandsSelector';
 import createDimensionsSelector from 'Store/Selectors/createDimensionsSelector';
 import createSeriesSelector from 'Store/Selectors/createSeriesSelector';
@@ -45,6 +45,7 @@ const mapDispatchToProps = {
   toggleSeasonMonitored,
   toggleEpisodesMonitored,
   toggleEpisodesWatchedArchived,
+  toggleSeasonWatchedArchived,
   setEpisodesTableOption,
   executeCommand
 };
@@ -68,6 +69,19 @@ class SeriesDetailsSeasonConnector extends Component {
       seriesId,
       seasonNumber,
       monitored
+    });
+  };
+
+  onWatchedArchivedSeasonPress = (watched) => {
+    const {
+      seriesId,
+      seasonNumber
+    } = this.props;
+
+    this.props.toggleSeasonWatchedArchived({
+      seriesId,
+      seasonNumber,
+      watched
     });
   };
 
@@ -110,6 +124,7 @@ class SeriesDetailsSeasonConnector extends Component {
         onSearchPress={this.onSearchPress}
         onMonitorEpisodePress={this.onMonitorEpisodePress}
         onWatchedArchivedEpisodePress={this.onWatchedArchivedEpisodePress}
+        onWatchedArchivedSeasonPress={this.onWatchedArchivedSeasonPress}
       />
     );
   }
@@ -119,6 +134,7 @@ SeriesDetailsSeasonConnector.propTypes = {
   seriesId: PropTypes.number.isRequired,
   seasonNumber: PropTypes.number.isRequired,
   toggleSeasonMonitored: PropTypes.func.isRequired,
+  toggleSeasonWatchedArchived: PropTypes.func.isRequired,
   toggleEpisodesMonitored: PropTypes.func.isRequired,
   toggleEpisodesWatchedArchived: PropTypes.func.isRequired,
   setEpisodesTableOption: PropTypes.func.isRequired,

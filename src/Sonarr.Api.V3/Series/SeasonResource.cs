@@ -9,6 +9,7 @@ namespace Sonarr.Api.V3.Series
     {
         public int SeasonNumber { get; set; }
         public bool Monitored { get; set; }
+        public bool Watched { get; set; }
         public SeasonStatisticsResource Statistics { get; set; }
         public List<MediaCover> Images { get; set; }
     }
@@ -26,6 +27,7 @@ namespace Sonarr.Api.V3.Series
             {
                 SeasonNumber = model.SeasonNumber,
                 Monitored = model.Monitored,
+                Watched = model.Watched,
                 Images = includeImages ? model.Images : null
             };
         }
@@ -40,7 +42,8 @@ namespace Sonarr.Api.V3.Series
             return new Season
             {
                 SeasonNumber = resource.SeasonNumber,
-                Monitored = resource.Monitored
+                Monitored = resource.Monitored,
+                Watched = resource.Watched
             };
         }
 

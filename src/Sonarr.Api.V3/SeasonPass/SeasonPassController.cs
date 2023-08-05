@@ -41,6 +41,7 @@ namespace Sonarr.Api.V3.SeasonPass
                         if (season != null)
                         {
                             seriesSeason.Monitored = season.Monitored;
+                            seriesSeason.Watched = season.Watched;
                         }
                     }
                 }

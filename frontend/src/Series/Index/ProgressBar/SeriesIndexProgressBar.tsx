@@ -42,18 +42,16 @@ function SeriesIndexProgressBar(props: SeriesIndexProgressBarProps) {
   const queueDetails: SeriesQueueDetails = useSelector(
     createSeriesQueueItemsDetailsSelector(seriesId, seasonNumber)
   );
-
-  const significantEpisodeCount = episodeCount + episodeArchivedCount;
   const significantEpisodeFileCount = episodeFileCount + episodeArchivedCount;
 
   const newDownloads = queueDetails.count - queueDetails.episodesWithFiles;
-  const progress = significantEpisodeCount
-    ? (significantEpisodeFileCount / significantEpisodeCount) * 100
+  const progress = episodeCount
+    ? (significantEpisodeFileCount / episodeCount) * 100
     : 100;
 
   const text = newDownloads
-    ? `${significantEpisodeFileCount} + ${newDownloads} / ${significantEpisodeCount}`
-    : `${significantEpisodeFileCount} / ${significantEpisodeCount}`;
+    ? `${significantEpisodeFileCount} + ${newDownloads} / ${episodeCount}`
+    : `${significantEpisodeFileCount} / ${episodeCount}`;
 
   return (
     <ProgressBar

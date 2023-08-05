@@ -160,14 +160,11 @@ export default function SeriesIndexFooter() {
               </DescriptionList>
 
               <DescriptionList>
-                <DescriptionListItem
-                  title="Episodes monitored"
-                  data={episodes}
-                />
+                <DescriptionListItem title="Episodes" data={episodes} />
 
-                <DescriptionListItem title="watched" data={episodeWatched} />
+                <DescriptionListItem title="Watched" data={episodeWatched} />
 
-                <DescriptionListItem title="archived" data={episodeArchived} />
+                <DescriptionListItem title="Archived" data={episodeArchived} />
               </DescriptionList>
 
               <DescriptionList>

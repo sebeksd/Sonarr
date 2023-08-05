@@ -5,6 +5,7 @@ import React from 'react';
 import IconButton from 'Components/Link/IconButton';
 import Scroller from 'Components/Scroller/Scroller';
 import TableOptionsModalWrapper from 'Components/Table/TableOptions/TableOptionsModalWrapper';
+import WatchedToggleButton from 'Components/WatchedToggleButton';
 import { icons, scrollDirections } from 'Helpers/Props';
 import TableHeader from './TableHeader';
 import TableHeaderCell from './TableHeaderCell';
@@ -38,6 +39,7 @@ function Table(props) {
     children,
     onSortPress,
     onTableOptionChange,
+    onExecuteAction,
     ...otherProps
   } = props;
 
@@ -100,6 +102,25 @@ function Table(props) {
                 );
               }
 
+              if (name === 'watched') {
+                return (
+                  <TableHeaderCell
+                    key={name}
+                    className={styles[name]}
+                    name={name}
+                    isSortable={false}
+                    {...otherProps}
+                  >
+
+                    <WatchedToggleButton
+                      isSaving={false}
+                      onPress={onExecuteAction}
+                      {...otherProps}
+                    />
+                  </TableHeaderCell>
+                );
+              }
+
               return (
                 <TableHeaderCell
                   key={column.name}
@@ -131,7 +152,8 @@ Table.propTypes = {
   canModifyColumns: PropTypes.bool,
   children: PropTypes.node,
   onSortPress: PropTypes.func,
-  onTableOptionChange: PropTypes.func
+  onTableOptionChange: PropTypes.func,
+  onExecuteAction: PropTypes.func
 };
 
 Table.defaultProps = {

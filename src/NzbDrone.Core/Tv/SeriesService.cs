@@ -188,6 +188,7 @@ namespace NzbDrone.Core.Tv
             var storedSeries = GetSeries(series.Id);
 
             var episodeMonitoredChanged = false;
+            var episodeWatchedChanged = false;
 
             if (updateEpisodesToMatchSeason)
             {
@@ -195,10 +196,25 @@ namespace NzbDrone.Core.Tv
                 {
                     var storedSeason = storedSeries.Seasons.SingleOrDefault(s => s.SeasonNumber == season.SeasonNumber);
 
-                    if (storedSeason != null && season.Monitored != storedSeason.Monitored)
+                    if (storedSeason != null && season.Watched != storedSeason.Watched)
                     {
-                        _episodeService.SetEpisodeMonitoredBySeason(series.Id, season.SeasonNumber, season.Monitored);
+                        _episodeService.SetEpisodeWatchedBySeason(series.Id, season.SeasonNumber, season.Watched);
+                        episodeWatchedChanged = true;
+                    }
+
+                    if (episodeWatchedChanged && season.Watched)
+                    {
+                        season.Monitored = false;
+                        _episodeService.SetEpisodeMonitoredBySeason(series.Id, season.SeasonNumber, false);
                         episodeMonitoredChanged = true;
+                    }
+                    else
+                    {
+                        if (storedSeason != null && season.Monitored != storedSeason.Monitored)
+                        {
+                            _episodeService.SetEpisodeMonitoredBySeason(series.Id, season.SeasonNumber, season.Monitored);
+                            episodeMonitoredChanged = true;
+                        }
                     }
                 }
             }

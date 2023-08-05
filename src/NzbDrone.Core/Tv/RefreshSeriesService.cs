@@ -145,6 +145,7 @@ namespace NzbDrone.Core.Tv
                     {
                         _logger.Debug("Ignoring season 0 for series [{0}] {1} by default", series.TvdbId, series.Title);
                         season.Monitored = false;
+                        season.Watched = false;
                         continue;
                     }
 
@@ -154,6 +155,7 @@ namespace NzbDrone.Core.Tv
                 else
                 {
                     season.Monitored = existingSeason.Monitored;
+                    season.Watched = existingSeason.Watched;
                 }
             }
 

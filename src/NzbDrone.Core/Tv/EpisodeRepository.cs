@@ -30,6 +30,7 @@ namespace NzbDrone.Core.Tv
         void SetMonitoredFlat(Episode episode, bool monitored);
         void SetWatchedFlat(Episode episode, bool watched);
         void SetMonitoredBySeason(int seriesId, int seasonNumber, bool monitored);
+        void SetWatchedBySeason(int seriesId, int seasonNumber, bool watched);
         void SetMonitored(IEnumerable<int> ids, bool monitored);
         void SetFileId(Episode episode, int fileId);
         void ClearFileId(Episode episode, bool unmonitor);
@@ -194,6 +195,15 @@ namespace NzbDrone.Core.Tv
             {
                 conn.Execute("UPDATE Episodes SET Monitored = @monitored WHERE SeriesId = @seriesId AND SeasonNumber = @seasonNumber AND Monitored != @monitored",
                     new { seriesId = seriesId, seasonNumber = seasonNumber, monitored = monitored });
+            }
+        }
+
+        public void SetWatchedBySeason(int seriesId, int seasonNumber, bool watched)
+        {
+            using (var conn = _database.OpenConnection())
+            {
+                conn.Execute("UPDATE Episodes SET Watched = @watched WHERE SeriesId = @seriesId AND SeasonNumber = @seasonNumber AND Watched != @watched",
+                    new { seriesId = seriesId, seasonNumber = seasonNumber, watched = watched });
             }
         }
 

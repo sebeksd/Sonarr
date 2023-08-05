@@ -406,6 +406,7 @@ export const DELETE_SERIES = 'series/deleteSeries';
 
 export const TOGGLE_SERIES_MONITORED = 'series/toggleSeriesMonitored';
 export const TOGGLE_SEASON_MONITORED = 'series/toggleSeasonMonitored';
+export const TOGGLE_SEASON_WATCHED_ARCHIVED = 'series/toggleSeasonWatchedArchived';
 export const UPDATE_SERIES_MONITOR = 'series/updateSeriesMonitor';
 export const SAVE_SERIES_EDITOR = 'series/saveSeriesEditor';
 export const BULK_DELETE_SERIES = 'series/bulkDeleteSeries';
@@ -444,6 +445,7 @@ export const deleteSeries = createThunk(DELETE_SERIES, (payload) => {
 
 export const toggleSeriesMonitored = createThunk(TOGGLE_SERIES_MONITORED);
 export const toggleSeasonMonitored = createThunk(TOGGLE_SEASON_MONITORED);
+export const toggleSeasonWatchedArchived = createThunk(TOGGLE_SEASON_WATCHED_ARCHIVED);
 export const updateSeriesMonitor = createThunk(UPDATE_SERIES_MONITOR);
 export const saveSeriesEditor = createThunk(SAVE_SERIES_EDITOR);
 export const bulkDeleteSeries = createThunk(BULK_DELETE_SERIES);
@@ -587,6 +589,109 @@ export const actionHandlers = handleThunks({
               section: 'episodes',
               monitored: changedSeason.monitored
             }));
+
+            return acc;
+          }, []);
+
+          dispatch(batchActions([
+            updateItem({
+              id,
+              section,
+              ...data
+            }),
+
+            ...episodesToUpdate
+          ]));
+
+          changedSeasons.forEach((s) => {
+            delete seasonsToUpdate[s.seasonNumber];
+          });
+        },
+        (xhr) => {
+          dispatch(updateItem({
+            id,
+            section,
+            seasons: series.seasons
+          }));
+
+          Object.keys(seasonsToUpdate).forEach((s) => {
+            delete seasonsToUpdate[s];
+          });
+        });
+    }, MONITOR_TIMEOUT);
+  },
+
+  [TOGGLE_SEASON_WATCHED_ARCHIVED]: function(getState, payload, dispatch) {
+    const {
+      seriesId: id,
+      seasonNumber,
+      watched
+    } = payload;
+
+    const seasonMonitorToggleTimeout = seasonMonitorToggleTimeouts[id];
+
+    if (seasonMonitorToggleTimeout) {
+      clearTimeout(seasonMonitorToggleTimeout);
+      delete seasonMonitorToggleTimeouts[id];
+    }
+
+    const series = getState().series.items.find((s) => s.id === id);
+    const seasons = _.cloneDeep(series.seasons);
+    const season = seasons.find((s) => s.seasonNumber === seasonNumber);
+
+    season.isSaving = true;
+
+    dispatch(updateItem({
+      id,
+      section,
+      seasons
+    }));
+
+    seasonsToUpdate[seasonNumber] = watched;
+    season.watched = watched;
+
+    seasonMonitorToggleTimeouts[id] = setTimeout(() => {
+      createAjaxRequest({
+        url: `/series/${id}`,
+        method: 'PUT',
+        data: JSON.stringify({
+          ...series,
+          seasons
+        }),
+        dataType: 'json'
+      }).request.then(
+        (data) => {
+          const changedSeasons = [];
+
+          data.seasons.forEach((s) => {
+            if (seasonsToUpdate.hasOwnProperty(s.seasonNumber)) {
+              if (s.watched === seasonsToUpdate[s.seasonNumber]) {
+                changedSeasons.push(s);
+              } else {
+                s.isSaving = true;
+              }
+            }
+          });
+
+          const episodesToUpdate = getState().episodes.items.reduce((acc, episode) => {
+            if (episode.seriesId !== data.id) {
+              return acc;
+            }
+
+            const changedSeason = changedSeasons.find((s) => s.seasonNumber === episode.seasonNumber);
+
+            if (!changedSeason) {
+              return acc;
+            }
+
+            acc.push(updateItem({
+              id: episode.id,
+              section: 'episodes',
+              monitored: changedSeason.monitored,
+              watched: changedSeason.watched
+            }));
+
+            episode.watched = watched;
 
             return acc;
           }, []);

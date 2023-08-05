@@ -40,7 +40,7 @@ export const defaultState = {
     {
       name: 'watched',
       columnLabel: 'Watched/Archived',
-      isVisible: true,
+      isVisible: false,
       isModifiable: true
     },
     {
