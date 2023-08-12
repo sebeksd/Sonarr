@@ -39,7 +39,7 @@ export const defaultState = {
     },
     {
       name: 'watched',
-      columnLabel: 'Watched/Archived',
+      label: () => translate('Watched/Archived'),
       isVisible: false,
       isModifiable: true
     },
